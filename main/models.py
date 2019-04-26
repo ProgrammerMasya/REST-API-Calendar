@@ -15,8 +15,12 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.end_datetime:
-            self.end_datetime = datetime(self.start_datetime.year,
-                                         self.start_datetime.month,
-                                         self.start_datetime.day,
-                                         23, 59, 59)
+            self.end_datetime = datetime(
+                self.start_datetime.year,
+                self.start_datetime.month,
+                self.start_datetime.day,
+                23,
+                59,
+                59,
+            )
         super(Event, self).save(*args, **kwargs)
