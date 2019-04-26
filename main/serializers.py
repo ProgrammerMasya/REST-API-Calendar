@@ -4,18 +4,7 @@ from rest_framework import serializers
 from .models import Event
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'username',
-        )
-
-
 class EventSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = Event
         fields = (
@@ -24,3 +13,4 @@ class EventSerializer(serializers.ModelSerializer):
             'start_datetime',
             'end_datetime',
         )
+
