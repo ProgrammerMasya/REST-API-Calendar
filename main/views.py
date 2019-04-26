@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+from rest_framework import generics
+from django.contrib.auth.models import User
 
 
 class EventView(APIView):
@@ -47,3 +49,4 @@ class EventMonthView(APIView):
         events = Event.objects.filter(**kwargs)
         serializer = EventSerializer(events, many=True)
         return Response({'data': serializer.data})
+
