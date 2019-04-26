@@ -34,3 +34,16 @@ class EventDayView(APIView):
         serializer = EventSerializer(events, many=True)
         return Response({'data': serializer.data})
 
+
+class EventMonthView(APIView):
+
+    @staticmethod
+    def get(request):
+        kwargs = dict(user=request.user)
+        if request.GET.get('year'):
+            kwargs['start_datetime__year'] = request.GET['year']
+        if request.GET.get('month'):
+            kwargs['start_datetime__month'] = request.GET['month']
+        events = Event.objects.filter(**kwargs)
+        serializer = EventSerializer(events, many=True)
+        return Response({'data': serializer.data})
