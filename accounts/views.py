@@ -1,7 +1,8 @@
 from rest_framework import permissions, views, status
-from .serializers import UserCreateSerializer, UserLoginSerializer
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, logout, login
+
+from .serializers import UserCreateSerializer, UserLoginSerializer
 
 
 class UserCreateView(views.APIView):
@@ -10,7 +11,7 @@ class UserCreateView(views.APIView):
     @staticmethod
     def post(request):
         serializer = UserCreateSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,7 +27,6 @@ class LoginView(views.APIView):
             username=request.data.get("username"),
             password=request.data.get("password"),
         )
-
         if user is None or not user.is_active:
             return Response({
                 'message': 'Username or password incorrect'

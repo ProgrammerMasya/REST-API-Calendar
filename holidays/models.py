@@ -13,3 +13,6 @@ class Holiday(models.Model):
 
 class UserProfile(User):
     country = models.CharField(max_length=20, default="Belarus")
+
+    def __str__(self):
+        return self.username
