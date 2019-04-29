@@ -1,27 +1,27 @@
-from rest_framework import generics, permissions
-from django.contrib.auth import get_user_model
+from rest_framework import permissions, views, status
 from .serializers import UserCreateSerializer, UserLoginSerializer
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import views
 from django.contrib.auth import authenticate, logout, login
 
 
-User = get_user_model()
-
-
-class UserCreateView(generics.CreateAPIView):
-    serializer_class = UserCreateSerializer
-    queryset = User.objects.all()
-
+class UserCreateView(views.APIView):
     permission_classes = [permissions.AllowAny]
+
+    @staticmethod
+    def post(request):
+        serializer = UserCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = UserLoginSerializer
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         user = authenticate(
             username=request.data.get("username"),
             password=request.data.get("password"),
@@ -37,7 +37,8 @@ class LoginView(views.APIView):
 
 class LogoutView(views.APIView):
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
