@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 from ics import Calendar
-import datetime
 
 
 def get_html(url):

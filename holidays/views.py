@@ -1,7 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
-import datetime
 
 from .serializers import *
 from .parser import get_holidays, get_countrys
@@ -16,7 +15,6 @@ class HolidayView(APIView):
         holidays = Holiday.objects.filter(
             country=request.user.userprofile.country
         )
-        print(Holiday.objects.values('country'))
         serializer = HolidaySerializer(holidays, many=True)
         return Response({'data': serializer.data})
 
